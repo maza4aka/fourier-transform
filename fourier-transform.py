@@ -107,17 +107,18 @@ if __name__ == '__main__':
     DFT = discrete_fourier_transform(signal)
     FFT = fast_fourier_transform(signal)
 
-    # проверим, правильно ли работает алгоритм FFT?..
+    # проверим, правильно ли работают алгоритмы?..
+    assert np.allclose(DFT, np.fft.fft(signal)), "DFT дал неверный результат!"
     assert np.allclose(DFT, FFT), "DFT и FFT дали разные результаты?"
-    DFT = FFT
+    ft = FFT
 
     fig, axs = plt.subplots(3, 1, constrained_layout=True)
 
     x = np.arange(0, sampling_rate, 1)
 
     axs[1].set_title('Быстрое преобразование Фурье...\nThe Cooley-Tukey algorithm!\n')
-    axs[1].bar(x, [np.sqrt(z.real*z.real + z.imag*z.imag)/len(DFT) for z in DFT]) # амплитудный спектр: |X_k|/N = sqrt(z.real^2 + z.imag^2)/N
-    axs[2].bar(x, [np.arctan(z.imag/z.real) for z in DFT]) # спектр фаз: phi = arctg( z.imag/z.real )
+    axs[1].bar(x, [np.sqrt(z.real*z.real + z.imag*z.imag)/len(ft) for z in ft]) # амплитудный спектр: |X_k|/N = sqrt(z.real^2 + z.imag^2)/N
+    axs[2].bar(x, [np.arctan(z.imag/z.real) for z in ft]) # спектр фаз: phi = arctg( z.imag/z.real )
 
     axs[1].set_xlabel('n`ая синусоида')
     axs[1].set_ylabel('амплитуда')
