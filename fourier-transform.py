@@ -112,7 +112,7 @@ if __name__ == '__main__':
     assert np.allclose(DFT, FFT), "DFT и FFT дали разные результаты?"
     ft = FFT
 
-    fig, axs = plt.subplots(3, 1, constrained_layout=True)
+    fig, axs = plt.subplots(4, 1, constrained_layout=True)
 
     x = np.arange(0, sampling_rate, 1)
 
@@ -133,6 +133,15 @@ if __name__ == '__main__':
 
     axs[0].set_xlabel('время')
     axs[0].set_ylabel('сигнал')
+
+    axs[3].set_title('Разница между np.fft и fast_fourier_transform\n'
+                     '(np.fft(signal) - fast_fourier_transform(signal), ближе к нулю - меньше разница)')
+    #axs[3].bar(x, np.abs(np.fft.fft(signal) - fast_fourier_transform(signal)))
+
+    diff = [f[0] - f[1] for f in zip(np.fft.fft(signal), fast_fourier_transform(signal))]
+    axs[3].plot(x, [z.real for z in diff], label='реальная часть')
+    axs[3].plot(x, [z.imag for z in diff], label='мнимая часть')
+    axs[3].grid(True); axs[3].legend()
 
     fig.canvas.set_window_title('')
 
